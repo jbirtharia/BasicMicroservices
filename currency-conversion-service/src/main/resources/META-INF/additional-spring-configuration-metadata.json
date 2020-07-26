@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "exchange.service.uri",
+      "type": "java.lang.String",
+      "description": "Description for exchange.service.uri."
+  }
+] }
