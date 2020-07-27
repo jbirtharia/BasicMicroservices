@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties("rabbitmq.bean")
+@ConfigurationProperties("rabbitmq.uri")
 public class RabbitConfig {
 
     @Value("{rabbitmq.exchange}")

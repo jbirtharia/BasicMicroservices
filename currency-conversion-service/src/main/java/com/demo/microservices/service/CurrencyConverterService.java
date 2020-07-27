@@ -50,7 +50,7 @@ public class CurrencyConverterService {
         CurrencyConversionBean response = proxy.retrieveExchangeValue(from, to);
 
         log.info("Response from API in Currency Converter Service : \n {}",response);
-        sender.send("Response from API in Currency Converter Service : \n "+response);
+        sender.send(response);
         return new CurrencyConversionBean(response.getId(),
                 from, to, response.getConversionMultiple(), quantity,
                 response.getConversionMultiple().multiply(quantity), response.getPort());
