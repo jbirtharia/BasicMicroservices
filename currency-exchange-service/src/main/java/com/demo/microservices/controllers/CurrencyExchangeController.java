@@ -23,7 +23,13 @@ public class CurrencyExchangeController {
     @GetMapping("/currency-exchange/from/{from}/to/{to}")
     ExchangeValue retrieveExchangeValue(@PathVariable String from, @PathVariable String to){
         ExchangeValue value = service.findCurrencyFromAndTo(from,to);
-        value.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
+        try {
+            value.setPort(Integer.parseInt(environment.getProperty("server.port")));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            value.setPort(0);
+        }
         return value;
     }
 }

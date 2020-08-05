@@ -16,4 +16,16 @@ public class RabbitConfig {
     private String queue;
 
     private String routingkey;
+
+    @Value("{spring.rabbitmq.host}")
+    private String host;
+
+    @Value("{spring.rabbitmq.port}")
+    private String port;
+
+    @Value("{spring.rabbitmq.username}")
+    private String username;
+
+    @Value("{spring.rabbitmq.password}")
+    private String password;
 }

@@ -1,0 +1,90 @@
+version: '3.7'
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.5.3-management
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    restart: always
+    networks:
+      - currency-compose-network
+
+
+  naming-server:
+    image: jbirtharia/netflix-eureka-naming-server:1.0
+    ports:
+    - "8761:8761"
+    restart: always
+    networks:
+      - currency-compose-network
+
+
+  exchange-service:
+    image: jbirtharia/currency-exchange-service:1.0
+    environment:
+      RABBIT_URI: host.docker.internal
+      RABBIT_PORT: 5673
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - rabbitmq
+      - naming-server
+      - zipkin-server
+    networks:
+      - currency-compose-network
+
+
+  currency-service:
+    image: jbirtharia/currency-conversion-service:1.0
+    environment:
+      RABBIT_URI: host.docker.internal
+      RABBIT_PORT: 5673
+    ports:
+      - "8100:8100"
+    restart: always
+    depends_on:
+      - rabbitmq
+      - naming-server
+      - exchange-service
+      - zipkin-server
+    networks:
+      - currency-compose-network
+
+
+  zuul-server:
+    image: jbirtharia/netflix-zuul-api-gateway-server:1.0
+    environment:
+      RABBIT_URI: host.docker.internal
+      RABBIT_PORT: 5673
+    ports:
+      - "8765:8765"
+    restart: always
+    depends_on:
+      - naming-server
+      - exchange-service
+      - currency-service
+      - rabbitmq
+      - zipkin-server
+    networks:
+      - currency-compose-network
+
+
+  zipkin-server:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    environment:
+      STORAGE_TYPE: mem
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+    ports:
+      - "9411:9411"
+    restart: always
+    depends_on:
+      - rabbitmq
+    networks:
+      - currency-compose-network
+
+
+networks:
+  currency-compose-network:

@@ -14,7 +14,7 @@ public class ExchangeValueService {
     private ExchangeValueRepository repository;
 
     public ExchangeValue findCurrencyFromAndTo(String from,String to){
-        ExchangeValue exchangeValue = repository.findByFromAndTo(from,to);
+        ExchangeValue exchangeValue = repository.findByFromAndToIgnoreCase(from,to);
         log.info("Exchange Value in Exchange Value Service : \n {}",exchangeValue);
         return exchangeValue;
     }

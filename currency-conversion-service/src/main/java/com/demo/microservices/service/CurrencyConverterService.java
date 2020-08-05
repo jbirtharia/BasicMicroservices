@@ -49,8 +49,15 @@ public class CurrencyConverterService {
 
         CurrencyConversionBean response = proxy.retrieveExchangeValue(from, to);
 
-        log.info("Response from API in Currency Converter Service : \n {}",response);
-        sender.send(response);
+        log.info("Response from API in Currency Converter Service : \n {}", response);
+        try {
+            sender.send(response);
+        } catch (Exception e) {
+            log.error("Issue happen in {} ", this.getClass().getName(),
+                    "and method is run method");
+            log.error("Issue in Connecting to RabbitMQ");
+            log.error("Cause Of Exaception : {} \n", e.getStackTrace());
+        }
         return new CurrencyConversionBean(response.getId(),
                 from, to, response.getConversionMultiple(), quantity,
                 response.getConversionMultiple().multiply(quantity), response.getPort());

@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +15,8 @@ import org.springframework.stereotype.Service;
 public class RabbitMQSender {
 
     @Autowired
-    private AmqpTemplate rabbitTemp;
+    @Qualifier("amqTemplate")
+    private AmqpTemplate rabbitTemplate;
 
     @Autowired
     private RabbitConfig config;
@@ -22,7 +24,7 @@ public class RabbitMQSender {
     @SneakyThrows
     public void send(CurrencyConversionBean obj) {
         log.info("Object Going For Routing : "+obj);
-        rabbitTemp.convertAndSend(config.getExchange(), config.getRoutingkey(), obj);
+        rabbitTemplate.convertAndSend(config.getExchange(), config.getRoutingkey(), obj);
 
     }
 }

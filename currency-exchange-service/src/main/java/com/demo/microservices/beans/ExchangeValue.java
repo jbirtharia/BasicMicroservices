@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
 public class ExchangeValue {
 

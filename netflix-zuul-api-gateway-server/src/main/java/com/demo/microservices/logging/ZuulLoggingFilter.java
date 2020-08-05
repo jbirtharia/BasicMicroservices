@@ -36,7 +36,15 @@ public class ZuulLoggingFilter extends ZuulFilter {
         HttpServletRequest request =
                 RequestContext.getCurrentContext().getRequest();
         log.info("Request uri -> {}",request.getRequestURI());
-        sender.send(request.getRequestURI());
+        try {
+            sender.send(request.getRequestURI());
+        }
+        catch (Exception e){
+            log.error("Issue happen in {} ",this.getClass().getName(),
+                    "and method is run method");
+            log.error("Issue in Connecting to RabbitMQ");
+            log.error("Cause Of Exaception : {} \n",e.getStackTrace());
+        }
         return null;
     }
 }

@@ -31,4 +31,5 @@ public class CurrencyConversionServiceApplication {
 	public RestTemplate restTemplate(){
 		return new RestTemplate();
 	}
+
 }
